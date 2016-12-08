@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
 
 public class Activity implements ActionListener, MouseListener, KeyListener {
 	public static Activity activity;
@@ -33,14 +34,11 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 	public boolean gameOver, started;
 
 	public Activity() {
-		//JButton b = new JButton("kfjsk");
 		JFrame jframe = new JFrame();
 		Timer timer = new Timer(20, this);
 		bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
-		// jet = new Rectangle(WIDTH - 30, HEIGHT / 2 - 10, 20, 20);
 		render = new Render();
 		random = new Random();
-	//	jframe.add(b);
 		jframe.setTitle("VOGEL");
 		jframe.add(render);
 		jframe.setSize(WIDTH, HEIGHT);
@@ -53,6 +51,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		addjet(true);
 		addjet(true);
 		addjet(true);
+		addjet(true);
 		timer.start();
 	}
 
@@ -62,8 +61,9 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		int height = 20; // random.nextInt(300);
 
 		if (start) {
-			jet.add(new Rectangle(WIDTH + width + jet.size() * 300, HEIGHT /2, width, height));
-		//	jet.add(new Rectangle(WIDTH + width + (jet.size() - 1) * 300, 0, width, HEIGHT - height - space));
+			//position of jets
+			jet.add(new Rectangle(WIDTH +random.nextInt(100)+ width +jet.size() *300, 200+random.nextInt(300), width, height));
+			 jet.add(new Rectangle(WIDTH + width +(jet.size()-1)*300, 200+random.nextInt(500), width, height));
 		} else {
 			jet.add(new Rectangle(jet.get(jet.size() - 1).x + 600, HEIGHT - height - 120, width, height));
 			jet.add(new Rectangle(jet.get(jet.size() - 1).x, 0, width, HEIGHT - height - space));
@@ -88,7 +88,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		}
 		if (!started) {
 			started = true;
-			
+
 		} else if (!gameOver) {
 			score = 1 + score;
 			if (yMotion > 0) {
@@ -107,11 +107,10 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		ticks++;
 		if (started) {
 
-			for (int i=0; i<jet.size(); i++)
-			{
-			Rectangle column = jet.get(i);
-			column.x -=speed;
-		}
+			for (int i = 0; i < jet.size(); i++) {
+				Rectangle column = jet.get(i);
+				column.x -= speed;
+			}
 			if (ticks % 2 == 0 && yMotion < 15) {
 				yMotion += 2;
 			}
@@ -124,6 +123,9 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			gameOver = true;
 		}
 		if (bird.y < 120) {
+			gameOver = true;
+		}
+		if (bird.x == 100){
 			gameOver = true;
 		}
 		// if (bird.y + yMotion >= HEIGHT - 120) {
@@ -161,8 +163,6 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		
 
 		if (!started) {
 			g.drawString("Tap to Start", 75, HEIGHT / 2 - 50);
