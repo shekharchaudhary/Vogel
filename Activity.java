@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -48,6 +49,14 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		jframe.setResizable(false);
 		jframe.setVisible(true);
 		jet = new ArrayList<Rectangle>();
+		jframe.addKeyListener(new KeyAdapter(){
+		    public void keyTyped(KeyEvent e){
+		        if(e.getKeyCode()==KeyEvent.VK_F2){
+		            //close frame one.
+		        	System.out.println("kkk");
+		        }
+		    } 
+		});	
 		addjet(true);
 		addjet(true);
 		addjet(true);
@@ -61,9 +70,10 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		int height = 20; // random.nextInt(300);
 
 		if (start) {
-			//position of jets
-			jet.add(new Rectangle(WIDTH +random.nextInt(100)+ width +jet.size() *300, 200+random.nextInt(300), width, height));
-			 jet.add(new Rectangle(WIDTH + width +(jet.size()-1)*300, 200+random.nextInt(500), width, height));
+			// position of jets
+			jet.add(new Rectangle(WIDTH + random.nextInt(100) + width + jet.size() * 300, 200 + random.nextInt(300),
+					width, height));
+			jet.add(new Rectangle(WIDTH + width + (jet.size() - 1) * 300, 200 + random.nextInt(500), width, height));
 		} else {
 			jet.add(new Rectangle(jet.get(jet.size() - 1).x + 600, HEIGHT - height - 120, width, height));
 			jet.add(new Rectangle(jet.get(jet.size() - 1).x, 0, width, HEIGHT - height - space));
@@ -103,7 +113,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int speed = 6;
+		int speed = 5;
 		ticks++;
 		if (started) {
 
@@ -119,19 +129,14 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		bird.y += yMotion;
 
 		// condition for game over
-		if (bird.y > HEIGHT - 120) {
+		if (bird.y > HEIGHT - 120 || bird.y < 120) {
 			gameOver = true;
 		}
-		if (bird.y < 120) {
-			gameOver = true;
+		for (Rectangle column : jet) {
+			if (bird.intersects(column)) {
+				gameOver = true;
+			}
 		}
-		if (bird.x == 100){
-			gameOver = true;
-		}
-		// if (bird.y + yMotion >= HEIGHT - 120) {
-		// //bird.y = HEIGHT - 120 - bird.height;
-		// gameOver = true;
-		// }
 
 		render.repaint();
 	}
@@ -175,10 +180,11 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			g.drawString("High Score: " + String.valueOf(highScore), WIDTH / 2 - 150, HEIGHT / 2 + 100); // high
 																											// score
 			g.drawString("Score:  " + String.valueOf(score), WIDTH / 2 - 155, HEIGHT / 2 + 200); // your
-																									// score
+																								// score
 
 		}
 		if (!gameOver && started) {
+			addjet(true);
 			g.setFont(new Font("Arial", 1, 25)); // text property
 			g.drawString("High Score: " + String.valueOf(highScore), 25, 100); // high
 																				// score
@@ -203,6 +209,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		activity = new Activity();
 
 	}
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -253,5 +260,5 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		}
 
 	}
-
+	
 }
