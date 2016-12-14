@@ -1,116 +1,96 @@
-
 package game1;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 
-import servlets.activity1;
-
+import game1.Activity;
 
 public class frame {
-	
-	
 
-	
+	private JFrame frame;
+	private JTextField txtYourHighScore;
 
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
-		
-		//add frame and properties
-		JFrame jframe = new JFrame();
-		jframe.setBackground(null);
-		jframe.setVisible(true);
-		jframe.setSize(800,800);
-		jframe.setDefaultCloseOperation(jframe.DISPOSE_ON_CLOSE);
-		
-		//add jpanel 
-		JPanel jpanel = new JPanel( );
-		
-		
-		jpanel.setSize(800, 800);
-		jpanel.setVisible(true);
-		jpanel.setLayout(null);
-		//Color color = RED;
-		//jpanel.setBackground(color);
-		jframe.add(jpanel);
-		
-		
-		//I WILL WORK HERE
-		//VOGEL LOGO 
-		Image image = null;
-		File image2 = new File("VOGEL.jpg");
-		try {
-			image = ImageIO.read(image2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 JLabel label = new JLabel(new ImageIcon(image));
-		 label.setBounds(100,100, 120, 100);
-		jpanel.add(label);
-		
-	
-		
-		
-	 // JButton
-		JButton jbutton = new JButton("play");
-		jpanel.add( jbutton);
-		jbutton.setToolTipText("click here and start game");
-		jbutton.setBounds(300,400, 120, 50);
-		
-		jbutton.addActionListener(new Action());
-		
-		//addtext field
-		
-		JTextField tf = new JTextField(" here is your hight score");
-		jpanel.add(tf);
-		tf.setBounds(200, 650, 300, 50);
-		
-		
-		
-	
-		
-		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					frame window = new frame();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
-	
-	
+
+	/**
+	 * Create the application.
+	 */
+	public frame() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.getContentPane().setForeground(new Color(0, 0, 205));
+		frame.getContentPane().setFont(new Font("Lucida Grande", Font.BOLD, 50));
+		frame.getContentPane().setBackground(Color.RED);
+		frame.setBackground(Color.RED);
+		frame.setBounds(100, 100, 800, 800);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.getContentPane().setLayout(null);
+		// LABLE
+		JLabel lblNewLabel = new JLabel("VOGEL");
+		lblNewLabel.setBounds(310, 148, 190, 55);
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 54));
+		frame.getContentPane().add(lblNewLabel);
+		// BUTTON
+		JButton btnNewButton = new JButton("START");
+		btnNewButton.setBounds(345, 400, 117, 61);
+		btnNewButton.setForeground(new Color(0, 0, 139));
+		btnNewButton.setBackground(new Color(105, 105, 105));
+		frame.getContentPane().add(btnNewButton);
+		btnNewButton.addActionListener(new Action());
+
+		// TEXT FIELD
+		txtYourHighScore = new JTextField();
+		txtYourHighScore.setForeground(new Color(0, 0, 139));
+		txtYourHighScore.setText("YOUR HIGH SCORE ");
+		txtYourHighScore.setBounds(310, 677, 235, 45);
+		frame.getContentPane().add(txtYourHighScore);
+		txtYourHighScore.setColumns(10);
+	}
+
 	static class Action implements ActionListener {
-		public void actionPerformed1(ActionEvent e){
-			//put your out put.
+		public void actionPerformed1(ActionEvent e) {
+			// put your out put.
 			
-			System.out.println("hello");
-		
+			
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			//System.out.println("hello");
 			System.out.println("hello");
-			Activity n = new  Activity();
+			Activity n = new Activity();
 		}
 
-		
 	}
-		
-	
-	
-		
+
 }
-		
-	
-	
-
-
-
