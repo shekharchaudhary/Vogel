@@ -33,9 +33,10 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 	public Random random;
 	public int ticks, yMotion, score, highScore;
 	public boolean gameOver, started;
+	JFrame jframe = new JFrame();
 
-	public Activity() {
-		JFrame jframe = new JFrame();
+	public void Activity() {
+
 		Timer timer = new Timer(20, this);
 		bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
 		render = new Render();
@@ -49,19 +50,20 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		jframe.setResizable(false);
 		jframe.setVisible(true);
 		jet = new ArrayList<Rectangle>();
-		jframe.addKeyListener(new KeyAdapter(){
-		    public void keyTyped(KeyEvent e){
-		        if(e.getKeyCode()==KeyEvent.VK_F2){
-		            //close frame one.
-		        	System.out.println("kkk");
-		        }
-		    } 
-		});	
+		jframe.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_F2) {
+					// close frame one.
+				}
+			}
+		});
+		
 		addjet(true);
 		addjet(true);
 		addjet(true);
 		addjet(true);
 		timer.start();
+		
 	}
 
 	public void addjet(boolean start) {
@@ -180,7 +182,6 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			g.drawString("High Score: " + String.valueOf(highScore), WIDTH / 2 - 150, HEIGHT / 2 + 100); // high
 																											// score
 			g.drawString("Score:  " + String.valueOf(score), WIDTH / 2 - 155, HEIGHT / 2 + 200); // your
-																								// score
 
 		}
 		if (!gameOver && started) {
@@ -191,6 +192,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			g.drawString("Score:  " + String.valueOf(score), WIDTH - 150, 100); // your
 																				// score
 		}
+	
 	}
 
 	public class Render extends JPanel {
@@ -200,16 +202,25 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Activity.activity.Repaint(g);
-
+			if(gameOver){
+				jframe.setVisible(false);
+				LastPage lp = new LastPage();
+				lp.ConnectLastpage();
+			}
 		}
 
 	}
 
 	public static void main(String arg[]) {
 		activity = new Activity();
+		activity.ConnectActivity();
 
 	}
-	
+
+	public void ConnectActivity() {
+		activity = new Activity();
+		activity.Activity();
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -260,5 +271,5 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		}
 
 	}
-	
+
 }
