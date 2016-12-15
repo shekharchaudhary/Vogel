@@ -33,7 +33,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 	public Random random;
 	public int ticks, yMotion, score, highScore;
 	public boolean gameOver, started;
-	JFrame jframe = new JFrame();
+    FrameClass jframe = new FrameClass();
 
 	public void Activity() {
 
@@ -41,13 +41,9 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
 		render = new Render();
 		random = new Random();
-		jframe.setTitle("VOGEL");
 		jframe.add(render);
-		jframe.setSize(WIDTH, HEIGHT);
 		jframe.addMouseListener(this);
 		jframe.addKeyListener(this);
-		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jframe.setResizable(false);
 		jframe.setVisible(true);
 		jet = new ArrayList<Rectangle>();
 		jframe.addKeyListener(new KeyAdapter() {
@@ -57,13 +53,12 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 				}
 			}
 		});
-		
 		addjet(true);
 		addjet(true);
 		addjet(true);
 		addjet(true);
 		timer.start();
-		
+
 	}
 
 	public void addjet(boolean start) {
@@ -177,6 +172,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 
 		}
 		if (gameOver) {
+			jframe.setVisible(false);
 			g.drawString("Game Over", WIDTH / 2 - 200, HEIGHT / 2 - 100);
 			g.setFont(new Font("Arial", 1, 50));
 			g.drawString("High Score: " + String.valueOf(highScore), WIDTH / 2 - 150, HEIGHT / 2 + 100); // high
@@ -192,7 +188,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			g.drawString("Score:  " + String.valueOf(score), WIDTH - 150, 100); // your
 																				// score
 		}
-	
+
 	}
 
 	public class Render extends JPanel {
@@ -202,7 +198,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Activity.activity.Repaint(g);
-			if(gameOver){
+			if (gameOver) {
 				jframe.setVisible(false);
 				LastPage lp = new LastPage();
 				lp.ConnectLastpage();
@@ -211,14 +207,14 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 
 	}
 
-	public static void main(String arg[]) {
-		activity = new Activity();
-		activity.ConnectActivity();
-
-	}
+//	public static void main(String arg[]) {
+//		activity = new Activity();
+//		activity.ConnectActivity();
+//
+//	}
 
 	public void ConnectActivity() {
-		activity = new Activity();
+	activity = new Activity();
 		activity.Activity();
 	}
 

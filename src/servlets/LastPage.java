@@ -1,4 +1,4 @@
-package game1;
+package servlets;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-public class lastpage {
+public class LastPage {
 
 	public class Action {
 
@@ -25,7 +25,7 @@ public class lastpage {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					lastpage window = new lastpage();
+					LastPage window = new LastPage();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,7 +37,7 @@ public class lastpage {
 	/**
 	 * Create the application.
 	 */
-	public lastpage() {
+	public LastPage() {
 		initialize();
 	}
 
@@ -78,37 +78,38 @@ public class lastpage {
 		btnNewButton_1.setBounds(354, 563, 117, 61);
 		frame.getContentPane().add(btnNewButton_1);
 		frame.setResizable(false);
-		
-		btnNewButton_1.addActionListener(new action());
+
+		btnNewButton_1.addActionListener(new EndButtonAction());
 
 	}
 
 	class CustomActionListener implements ActionListener {
-		public void actionPerformed1(ActionEvent e) {
-
-		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Start here
+			frame.setVisible(false);
 			System.out.println("hello");
-			Activity n = new Activity();
+			// new Activity();
+			Activity a = new Activity();
+			a.ConnectActivity();
+
 		}
 
 	}
-	class action implements ActionListener {
-		public void actionPerformed1(ActionEvent e) {
 
-		}
-
+	class EndButtonAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO exit here
-		System.exit(0);
+			System.exit(0);
 		}
 
 	}
-	
-	
-	
+
+	public void ConnectLastpage() {
+	LastPage lastPage = new LastPage();
+	lastPage.frame.setVisible(true);
+	}
+
 }

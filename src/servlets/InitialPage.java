@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-
 public class InitialPage {
 
 	private static JFrame frame;
@@ -69,7 +68,7 @@ public class InitialPage {
 		// TEXT FIELD
 		txtYourHighScore = new JTextField();
 		txtYourHighScore.setForeground(new Color(0, 0, 139));
-		txtYourHighScore.setText("YOUR HIGH SCORE ");
+		txtYourHighScore.setText("YOUR HIGH SCORE" + "00000000");
 		txtYourHighScore.setBounds(310, 677, 235, 45);
 		frame.getContentPane().add(txtYourHighScore);
 		txtYourHighScore.setColumns(10);
@@ -78,14 +77,13 @@ public class InitialPage {
 	static class Action implements ActionListener {
 		public void actionPerformed1(ActionEvent e) {
 			// put your out put.
-			
-			
+
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			//System.out.println("hello");
+			// System.out.println("hello");
 			System.out.println("hello");
 			frame.setVisible(false);
 			Activity a = new Activity();
