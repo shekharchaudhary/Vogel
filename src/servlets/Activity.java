@@ -3,7 +3,6 @@ package servlets;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,33 +11,31 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
 
 public class Activity implements ActionListener, MouseListener, KeyListener {
 	public static Activity activity;
+	//static highScore HIscore;
 	public ArrayList<Rectangle> jet;
-	public final int WIDTH = 800, HEIGHT = 800;
+	static int WIDTH, HEIGHT;
 	public Render render;
 	public Rectangle bird;
 	public Random random;
-	public int ticks, yMotion, score, highScore;
+	public int ticks, yMotion, score;
 	public boolean gameOver, started;
-    FrameClass jframe = new FrameClass();
+	FrameClass jframe;
+	static int highScore1;
 
-	public void Activity() {
+	public void ActivityMethod() {
+		jframe = new FrameClass();
 
 		Timer timer = new Timer(20, this);
-		bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+		bird = new Rectangle(jframe.getWidth() / 2 - 10, jframe.getHeight() / 2 - 10, 20, 20);
 		render = new Render();
 		random = new Random();
 		jframe.add(render);
@@ -58,7 +55,15 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		addjet(true);
 		addjet(true);
 		timer.start();
-
+		
+			String hs = "";
+			try {
+				hs = highScore.updateHiScore(0).toString();
+				highScore1 = Integer.valueOf(hs);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		
 	}
 
 	public void addjet(boolean start) {
@@ -103,15 +108,25 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			}
 			yMotion -= 7;
 		}
-		if (highScore < score) {
-			highScore = score;
+		if (highScore1 < score) {
+			highScore1 = score;
+			try {
+				highScore.updateHiScore(score);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
+			
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int speed = 5;
 		ticks++;
+		
 		if (started) {
 
 			for (int i = 0; i < jet.size(); i++) {
@@ -139,6 +154,8 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 	}
 
 	public void Repaint(Graphics g) {
+		HEIGHT = jframe.getHeight();
+		WIDTH = jframe.getWidth();
 		g.setColor(new Color(6, 220, 250)); // background color
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		g.setColor(new Color(87, 247, 242)); // sky color
@@ -149,33 +166,28 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		g.fillRect(0, HEIGHT - 120, WIDTH, 20);
 		g.setColor(Color.red); // bird color
 		g.fillRect(bird.x, bird.y, bird.width, bird.height);
-		// g.setColor(Color.BLACK); // jet color
-		// g.fillRect(jet.x, jet.y, jet.width, jet.height);
 		for (Rectangle column : jet) {
 			Jet(g, column);
 		}
 		g.setColor(Color.white); // text color
 		g.setFont(new Font("Arial", 1, 100)); // text property for first page
 
-		Image image = null;
-		File image2 = new File("vogel.jpg");
-		try {
-			image = ImageIO.read(image2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		if (!started) {
-			g.drawString("Tap to Start", 75, HEIGHT / 2 - 50);
-			// g.drawImage(image, 0, 0, null);
-
+			g.setFont(new Font("Comic Sans MS", 1, 25));
+			g.setColor(new Color(255,0,0));
+			g.drawString("High Score: " + String.valueOf(highScore1), WIDTH /2-100, HEIGHT /10);
+			g.setFont(new Font("Comic Sans MS", 2, 100));
+			g.setColor(new Color(255,255,0));
+			g.drawString("Tap to Start", WIDTH/2 -275, HEIGHT / 2 - 50);
 		}
 		if (gameOver) {
-			jframe.setVisible(false);
+			// jframe.setVisible(false);
+			// CloseFrame();
+
 			g.drawString("Game Over", WIDTH / 2 - 200, HEIGHT / 2 - 100);
 			g.setFont(new Font("Arial", 1, 50));
-			g.drawString("High Score: " + String.valueOf(highScore), WIDTH / 2 - 150, HEIGHT / 2 + 100); // high
+			g.drawString("High Score: " + String.valueOf(highScore1), WIDTH / 2 - 150, HEIGHT / 2 + 100); // high
 																											// score
 			g.drawString("Score:  " + String.valueOf(score), WIDTH / 2 - 155, HEIGHT / 2 + 200); // your
 
@@ -183,7 +195,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		if (!gameOver && started) {
 			addjet(true);
 			g.setFont(new Font("Arial", 1, 25)); // text property
-			g.drawString("High Score: " + String.valueOf(highScore), 25, 100); // high
+			g.drawString("High Score: " + String.valueOf(highScore1), 25, 100); // high
 																				// score
 			g.drawString("Score:  " + String.valueOf(score), WIDTH - 150, 100); // your
 																				// score
@@ -207,15 +219,15 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 
 	}
 
-//	public static void main(String arg[]) {
-//		activity = new Activity();
-//		activity.ConnectActivity();
-//
-//	}
+	public static void main(String arg[]) {
+		activity = new Activity();
+		activity.ConnectActivity();
+
+	}
 
 	public void ConnectActivity() {
-	activity = new Activity();
-		activity.Activity();
+		activity = new Activity();
+		activity.ActivityMethod();
 	}
 
 	@Override
@@ -266,6 +278,14 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			Fly();
 		}
 
+	}
+
+	public FrameClass getJframe() {
+		return jframe;
+	}
+
+	public void setJframe(FrameClass jframe) {
+		this.jframe = jframe;
 	}
 
 }
