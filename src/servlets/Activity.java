@@ -11,17 +11,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Activity implements ActionListener, MouseListener, KeyListener {
 	public static Activity activity;
-	//static highScore HIscore;
-	public ArrayList<Rectangle> jet;
+	// static highScore HIscore;
+	public ArrayList<Rectangle> jet, cloud;
 	static int WIDTH, HEIGHT;
 	public Render render;
 	public Rectangle bird;
@@ -30,6 +33,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 	public boolean gameOver, started;
 	FrameClass jframe;
 	static int highScore1;
+	public BufferedImage plane2Image, cloudImage;
 
 	public void ActivityMethod() {
 		jframe = new FrameClass();
@@ -43,6 +47,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		jframe.addKeyListener(this);
 		jframe.setVisible(true);
 		jet = new ArrayList<Rectangle>();
+		cloud = new ArrayList<Rectangle>();
 		jframe.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_F2) {
@@ -54,16 +59,26 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		addjet(true);
 		addjet(true);
 		addjet(true);
+		addCloud(true);
+
 		timer.start();
-		
-			String hs = "";
-			try {
-				hs = highScore.updateHiScore(0).toString();
-				highScore1 = Integer.valueOf(hs);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		
+
+		String hs = "";
+		try {
+			hs = highScore.updateHiScore(0).toString();
+			highScore1 = Integer.valueOf(hs);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		// for background image
+		try {
+			plane2Image = ImageIO.read(new File("Plane2.png"));
+			cloudImage = ImageIO.read(new File("Cloud.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 	}
 
 	public void addjet(boolean start) {
@@ -73,9 +88,9 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 
 		if (start) {
 			// position of jets
-			jet.add(new Rectangle(WIDTH + random.nextInt(100) + width + jet.size() * 300, 200 + random.nextInt(300),
+			jet.add(new Rectangle(WIDTH + random.nextInt(100) + width + jet.size() * 300, 20 + random.nextInt(200),
 					width, height));
-			jet.add(new Rectangle(WIDTH + width + (jet.size() - 1) * 300, 200 + random.nextInt(500), width, height));
+			jet.add(new Rectangle(WIDTH + width + (jet.size() - 1) * 300, 200 + random.nextInt(300), width, height));
 		} else {
 			jet.add(new Rectangle(jet.get(jet.size() - 1).x + 600, HEIGHT - height - 120, width, height));
 			jet.add(new Rectangle(jet.get(jet.size() - 1).x, 0, width, HEIGHT - height - space));
@@ -83,9 +98,33 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		}
 	}
 
+	public void addCloud(boolean start) {
+		// int space = 300;
+		int width = 30;
+		int height = 20; // random.nextInt(300);
+
+		if (start) {
+			// position of jets
+			cloud.add(new Rectangle(width + 10, height + 10, width, height));
+			cloud.add(new Rectangle(0, 40 + random.nextInt(100), width, height));
+		} else {
+			cloud.add(new Rectangle(cloud.get(cloud.size() - 1).x + 100, 100, width, height));
+			cloud.add(new Rectangle(cloud.get(cloud.size() - 1).x, 0, width, height));
+
+		}
+	}
+
 	public void Jet(Graphics g, Rectangle column) {
 		g.setColor(Color.black);
-		g.fillRect(column.x, column.y, column.width, column.height);
+		g.drawImage(plane2Image, column.x, column.y, 75, 30, null);
+		// g.fillRect(column.x, column.y, column.width, column.height);
+
+	}
+
+	public void Cloud(Graphics g, Rectangle column) {
+		g.setColor(Color.black);
+		g.drawImage(cloudImage, column.x, column.y, 75, 30, null);
+		// g.fillRect(column.x, column.y, column.width, column.height);
 
 	}
 
@@ -96,6 +135,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			score = 0;
 			addjet(true);
 			addjet(true);
+			addCloud(true);
 			gameOver = false;
 		}
 		if (!started) {
@@ -116,17 +156,16 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-			
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int speed = 5;
 		ticks++;
-		
+
 		if (started) {
 
 			for (int i = 0; i < jet.size(); i++) {
@@ -135,6 +174,10 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 			}
 			if (ticks % 2 == 0 && yMotion < 15) {
 				yMotion += 2;
+			}
+			for (int i = 0; i < cloud.size(); i++) {
+				Rectangle column2 = cloud.get(i);
+				column2.x += 5;
 			}
 		}
 
@@ -169,17 +212,19 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		for (Rectangle column : jet) {
 			Jet(g, column);
 		}
+		for (Rectangle column : cloud) {
+			Cloud(g, column);
+		}
 		g.setColor(Color.white); // text color
 		g.setFont(new Font("Arial", 1, 100)); // text property for first page
-
-
+		// g.drawImage(plane2, 1, 0, 100, 100, null);
 		if (!started) {
 			g.setFont(new Font("Comic Sans MS", 1, 25));
-			g.setColor(new Color(255,0,0));
-			g.drawString("High Score: " + String.valueOf(highScore1), WIDTH /2-100, HEIGHT /10);
+			g.setColor(new Color(255, 0, 0));
+			g.drawString("High Score: " + String.valueOf(highScore1), WIDTH / 2 - 100, HEIGHT / 10);
 			g.setFont(new Font("Comic Sans MS", 2, 100));
-			g.setColor(new Color(255,255,0));
-			g.drawString("Tap to Start", WIDTH/2 -275, HEIGHT / 2 - 50);
+			g.setColor(new Color(255, 255, 0));
+			g.drawString("Tap to Start", WIDTH / 2 - 275, HEIGHT / 2 - 50);
 		}
 		if (gameOver) {
 			// jframe.setVisible(false);
@@ -194,6 +239,7 @@ public class Activity implements ActionListener, MouseListener, KeyListener {
 		}
 		if (!gameOver && started) {
 			addjet(true);
+			addCloud(true);
 			g.setFont(new Font("Arial", 1, 25)); // text property
 			g.drawString("High Score: " + String.valueOf(highScore1), 25, 100); // high
 																				// score
