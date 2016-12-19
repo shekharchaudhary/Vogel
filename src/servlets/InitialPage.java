@@ -15,7 +15,7 @@ public class InitialPage {
 
 	private static JFrame frame;
 	private JTextField txtYourHighScore;
-
+	static highScore hiScore;
 	/**
 	 * Launch the application.
 	 */
@@ -66,9 +66,19 @@ public class InitialPage {
 		btnNewButton.addActionListener(new Action());
 
 		// TEXT FIELD
+		// TEXT FIELD
+		 txtYourHighScore = new JTextField();
+		String HIscore ="";
+		try {
+			HIscore = highScore.updateHiScore(0).toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		txtYourHighScore = new JTextField();
 		txtYourHighScore.setForeground(new Color(0, 0, 139));
-		txtYourHighScore.setText("YOUR HIGH SCORE" + "00000000");
+		txtYourHighScore.setText("YOUR HIGH SCORE" + HIscore);
 		txtYourHighScore.setBounds(310, 677, 235, 45);
 		frame.getContentPane().add(txtYourHighScore);
 		txtYourHighScore.setColumns(10);
