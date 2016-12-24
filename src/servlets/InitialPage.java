@@ -1,3 +1,4 @@
+
 package servlets;
 
 import java.awt.Color;
@@ -12,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class InitialPage {
-
 
 	private JLabel lable;
 	static FrameClass frame;
@@ -50,53 +50,53 @@ public class InitialPage {
 	private void initialize() {
 		frame = new FrameClass();
 		Height = frame.getHeight();
-		Width =frame.getWidth();
-		frame.getContentPane().setForeground(new Color(0, 0, 205));
-		frame.getContentPane().setFont(new Font("Lucida Grande", Font.BOLD, 50));
+		Width = frame.getWidth();
 		frame.getContentPane().setBackground(Color.RED);
-		//frame.setBackground(Color.RED);
 		frame.getContentPane().setLayout(null);
-		frame.setResizable(false);
-		
-	
+
 		JLabel lblNewLabel = new JLabel("VOGEL");
 		lblNewLabel.setForeground(Color.BLUE);
-		lblNewLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 150));
+		lblNewLabel.setFont(new Font("Comic Sans MS", Font.BOLD, Height / 6));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(243, 32, 500, 166);
+		lblNewLabel.setBounds(Width / 3, Height / 6, Width / 3, Height / 6);
 		frame.getContentPane().add(lblNewLabel);
-		
-		JButton btnNewButton = new JButton("PLAY");
-		btnNewButton.setForeground(Color.MAGENTA);
+
+		JButton btnNewButton = new JButton("FLY");
+		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.addActionListener(new Action());
 		btnNewButton.setBackground(Color.LIGHT_GRAY);
-		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 26));
-		btnNewButton.setBounds(Width/2-60, Height/2-10, 120, 50);
+		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, Height / 20));
+		btnNewButton.setBounds(Width / 2 - (Width / 26), Height / 2, Width / 13, Height / 10);
 		frame.getContentPane().add(btnNewButton);
 		// High Score
-				String HIscore = "";
-				try {
-					HIscore = highScore.updateHiScore(0).toString();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-//
-		
+		String HIscore = "";
+		try {
+			HIscore = highScore.updateHiScore(0).toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		lable = new JLabel();
-		lable.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
-		lable.setText(" High Score : "+HIscore);
+		lable.setFont(new Font("Comic Sans MS", Font.BOLD, Height / 18));
+		lable.setText(" High Score : " + HIscore);
 		lable.setForeground(Color.YELLOW);
-		lable.setBounds(Width/2-250, Height/2+110, 380, 50);
+		lable.setBounds(Width / 2 - (Width / 7), Height / 2+(Height / 14), Width / 2, Height / 2);
 		frame.getContentPane().add(lable);
-		//lable.setColumns(10);
-		//frame.setBounds(100,100,Width,Height);
-	}
-static class Action implements ActionListener {
 		
+	}
+
+	static class Action implements ActionListener {
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("hello");
+			// System.out.println("hello");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			frame.setVisible(false);
 			Activity a = new Activity();
 			a.ConnectActivity();
