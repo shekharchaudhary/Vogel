@@ -81,9 +81,9 @@ public class InitialPage {
 		lable.setFont(new Font("Comic Sans MS", Font.BOLD, Height / 18));
 		lable.setText(" High Score : " + HIscore);
 		lable.setForeground(Color.YELLOW);
-		lable.setBounds(Width / 2 - (Width / 7), Height / 2+(Height / 14), Width / 2, Height / 2);
+		lable.setBounds(Width / 2 - (Width / 7), Height / 2 + (Height / 14), Width / 2, Height / 2);
 		frame.getContentPane().add(lable);
-		
+
 	}
 
 	static class Action implements ActionListener {
